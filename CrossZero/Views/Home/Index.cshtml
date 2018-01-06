@@ -1,0 +1,775 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Нолики и К";
+}
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>@ViewBag.Title </title>
+        <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+        
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <script src="~/Scripts/modernizr-2.6.2.js"></script>
+            
+        <style>
+            .myhead {
+                position: fixed;
+                height: 95px;
+                width: 100%;
+                z-index: 50;
+                border-bottom: 1px solid black;
+                background-color: white;
+            }
+
+            #mover {
+                position: absolute;
+                width: 290px;
+                height: 70px;
+                top: 10px;
+                border: 1px solid black;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+                text-align: center;
+                line-height: 70px
+            }
+            #outer {
+                position: fixed;
+                left: 0px;
+                top: 105px;
+                bottom: 0px;
+                right: 0px;
+                overflow-y: scroll;
+                overflow-x: auto;
+            }
+
+            .Pole {
+                position: absolute;
+                background-color: beige;
+                border: 1px solid black;
+                left: 0;
+                right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                width: 500px;
+                height: 625px;
+                top: 2px;
+            }
+
+            .cell {
+                position: absolute;
+                background: rgb(100,100,100) radial-gradient(circle at 0 0, rgba(255,255,255,.65), rgba(255,255,255,.35));
+                box-shadow: inset rgba(0,0,0,.5) -3px -3px 8px, inset rgba(255,255,255,.9) 3px 3px 8px, rgba(0,0,0,.8) 3px 3px 8px -3px;
+            }
+
+            .cross {
+                position: absolute;
+                top: 15%;
+                height: 70%;    
+                left:50%;
+                opacity: 1;
+            }
+
+                .cross:before, .cross:after {
+                    position: absolute;
+                    content: ' ';
+                    height: 100%;
+                    width: 20px;   
+                    left:-10px;
+                    background-color: navy;
+                }
+
+                .cross:before {
+                    transform: rotate(45deg);                    
+                }
+
+                .cross:after {
+                    transform: rotate(-45deg);                    
+                }
+
+            .zero {
+                position: absolute;
+                top: 20px;
+                left: 65px;
+                opacity: 1;
+            }
+
+            .outer_centr {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .circles {
+                position: absolute;
+                right: 0;
+                margin: auto;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 70%;
+                height: 70%;
+                border-radius: 50%;
+                box-shadow: inset 0 0 0 20px navy;
+            }
+
+            .strikeV1 {
+                position: absolute;
+                height: 480px;
+                width: 20px;
+                left: 66px;
+                top: -15px;
+                background-color: red;
+                opacity: 0.7;
+            }
+            .strikeV2 {
+                position: absolute;
+                height: 480px;
+                width: 20px;
+                left: 216px;
+                top: -15px;
+                background-color: red;
+                opacity: 0.7;
+            }
+            .strikeV3 {
+                position: absolute;
+                height: 480px;
+                width: 20px;
+                left: 366px;
+                top: -15px;
+                background-color: red;
+                opacity: 0.7;
+            }
+
+            .strikeH1 {
+                position: absolute;
+                height: 20px;
+                width: 480px;
+                left: -15px;
+                top: 66px;
+                background-color: red;
+                opacity: 0.7;
+            }
+            .strikeH2 {
+                position: absolute;
+                height: 20px;
+                width: 480px;
+                left: -15px;
+                top: 216px;
+                background-color: red;
+                opacity: 0.7;
+            }
+            .strikeH3 {
+                position: absolute;
+                height: 20px;
+                width: 480px;
+                left: -15px;
+                top: 366px;
+                background-color: red;
+                opacity: 0.7;
+            }
+            .strikeL {
+                position: absolute;
+                height: 20px;
+                width: 662px;
+                left: -15px;
+                top: -15px;
+                background-color: red;
+                transform-origin: 0px 10px;
+                transform: rotate(45deg);
+                opacity: 0.7;
+            }
+            .strikeR {
+                position: absolute;
+                height: 20px;
+                width: 662px;
+                left: -15px;
+                top: 445px;
+                background-color: red;
+                transform-origin: 0px 10px;
+                transform: rotate(-45deg);
+                opacity: 0.7;
+            }
+
+            .strikeN {
+                position: absolute;
+                /*height: 50px;
+                width: 480px;*/
+                left: 15px;
+                top: 15px;
+                bottom:15px;
+                right:15px;
+                background-color: darkseagreen;
+                opacity: 0.7;
+            }
+
+
+            .mybtn {
+                position: absolute;
+                height: 34px;                
+                background-color: white;
+                line-height: 34px;
+                cursor: pointer;
+                text-align: center;
+                -ms-user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
+                border: 1px solid darkgray;
+            }
+
+            .resultat {
+                position: absolute;
+                height: 34px;
+                background-color: black;
+                color: lightgreen;
+                line-height: 34px;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            .ramka {
+                opacity: 0;
+                background-color: darkseagreen;
+            }
+
+
+            #radio1:checked + #ramka1 {
+                opacity: 0.8;
+            }
+
+            #radio2:checked + #ramka2 {
+                opacity: 0.8;
+            }
+
+            .c00{position:absolute;left:0px;top:0px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c01{position:absolute;left:15px;top:0px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c02{position:absolute;left:30px;top:0px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c10{position:absolute;left:0px;top:15px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c11{position:absolute;left:15px;top:15px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c12{position:absolute;left:30px;top:15px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c20{position:absolute;left:0px;top:30px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c21{position:absolute;left:15px;top:30px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+            .c22{position:absolute;left:30px;top:30px;height:15px;width:15px;border:1px solid blue;text-align:center;color:blue;line-height:15px;}
+
+            .sMstrikeH1 { position: absolute;height: 45px;width: 1px;left: 7px; top: 0px; background-color: red; opacity: 1; }
+            .sMstrikeH2 { position: absolute;height: 45px;width: 1px;left: 22px; top: 0px; background-color: red; opacity: 1; }
+            .sMstrikeH3 { position: absolute;height: 45px;width: 1px;left: 37px; top: 0px; background-color: red; opacity: 1; }
+            .sMstrikeV1 { position: absolute;height: 1px;width: 45px;left: 0px; top: 7px; background-color: red; opacity: 1; }
+            .sMstrikeV2 { position: absolute;height: 1px;width: 45px;left: 0px; top: 22px; background-color: red; opacity: 1; }
+            .sMstrikeV3 { position: absolute;height: 1px;width: 45px;left: 0px; top: 37px; background-color: red; opacity: 1; }
+            .sMstrikeL { position: absolute;height: 1px;width: 63px;left: 0px; top: 0px; background-color: red; opacity: 1;transform-origin: 0px 0px;transform: rotate(45deg);}
+            .sMstrikeR { position: absolute;height: 1px;width: 63px;left: 0px; top: 45px; background-color: red; opacity: 1;transform-origin: 0px 0px;transform: rotate(-45deg);}
+        </style>
+        <script>
+            var CellGame = function (parent, x, y, h) {
+                this.Parent = parent;
+                this.X = x;
+                this.Y = y;
+                this.H = h;
+                this.Div;
+                this.inDiv;      // Внутренний див для установки класса символа
+                this.isSet = 0;  // Установлен крестик или нолик или нет 0 - пусто 1 - крестик 4 - нолик
+                var self = this;  // Сохраняем текущий объект для работы в прерывании
+
+                var onclickcell = function (e) {                    // Если символ установлен на этой ячейке больше не кликать
+                    if (self.Parent.waitClick) {              // проверка активности
+                        if (self.isSet == 0) {
+
+                            if (!self.Parent.PouseClick) {
+                                self.Parent.PouseClick = true;
+
+                                // Установка сделанного хода в поле
+                                var simvol = 0;
+                                if ((self.Parent.NumberHod % 2) == 0) {
+                                    simvol = 1;
+                                } else {
+                                    simvol = 4;
+                                }
+                                self.SetClass(simvol);
+                                self.Parent.NumberHod++;
+                                self.Parent.AddMassiveHod(self.X, self.Y, (self.Parent.CurrentPlayer.index + 1));//simvol);//(self.Parent.CurrentPlayer.index + 1)
+
+                                // После установки хода проверка окончания игры
+                                // Если ничья в страйк писать Ничья и расположить по средине
+
+                                var s = self.Parent.TestStrike();
+                                if (s != '') {
+                                    self.Parent.DivStrike.className = s;
+                                }
+
+
+                                // Если игра не окончена то сменяем игрока и начинаем выполнять ход 
+
+                                if (s != '') {
+                                    self.Parent.waitClick = false;
+                                    self.Parent.CountEndGame++;
+                                    var v = 0;
+                                    if (s != 'strikeN') {
+                                        self.Parent.CurrentPlayer.CountVictory++;
+                                        self.Parent.CurrentPlayer.setCountVictory();
+                                        v = (self.Parent.CurrentPlayer.index + 1);
+                                    } else {
+                                        self.Parent.Players[0].Select(false);
+                                        self.Parent.Players[1].Select(false);
+                                    }
+
+                                    var submit = document.getElementById('submitsave');
+                                    document.getElementsByName('victory')[0].value = v;
+                                    document.getElementsByName('historysave')[0].value = self.Parent.CreateStrHistory();
+                                    submit.click();                                    
+
+                                } else {
+                                    // Сменить текущий объект 
+                                    self.Parent.NextPlayer();
+                                    self.Parent.CurrentPlayer.MakeHod();
+                                }
+
+                            }
+
+                        }
+                    }
+                    
+                }
+
+                this.Create = function () {
+                    this.Div = document.createElement('div');
+                    this.Div.className = 'cell';
+                    this.Div.cell = this;  // Помещение в <div> блок ссылки на этот объект
+
+                    this.Div.innerHTML = '<div></div>';  // Добавление <div> блока для возможного установления в него символа
+                    this.inDiv = this.Div.firstChild;
+
+                    this.Div.addEventListener('click', onclickcell);
+
+                    this.Div.style.width = this.H + 'px';
+                    this.Div.style.height = this.H + 'px';
+                    this.Div.style.left = (this.H * this.Y) + 'px';
+                    this.Div.style.top = (this.H * this.X) + 'px';
+
+                    this.Parent.Div.appendChild(this.Div);
+                }
+                this.SetClass = function (n) {
+                    
+                    if (n == 0) {
+                        this.inDiv.className = '';
+                        this.isSet = n;
+                    }
+                    if (n == 1) {
+                        this.inDiv.className = 'cross';
+                        this.isSet = n;
+                    }
+                    if (n == 4) {
+                        this.inDiv.className = 'circles';
+                        this.isSet = n;
+                    }
+                    
+                }
+                this.Create();
+            }
+
+            var PoleGame = function (iddiv, h) {
+                this.H = h;
+                this.Div;
+                this.DivStrike;// 
+                this.isStrike=false;
+                this.MassivCell = [];
+                this.NumberHod = 0;
+                this.PouseClick = true; 
+                this.MassivHod = [];      // Массив сделанных ходов 
+
+                this.waitClick = false;   // Включить ожидание клика по мыши
+
+                this.CountEndGame = 0; // Количество законченых игр 
+
+                this.CurrentPlayer;
+                this.Players=[];
+                this.SetPlayer = function (p1, p2) {
+                    this.Players = [];
+                    this.Players.push(p1); p1.index = 0;
+                    this.Players.push(p2); p2.index = 1;
+                    this.CurrentPlayer = p1;
+                }
+                this.NextPlayer = function () {
+                    if (this.CurrentPlayer.index == 0) {
+                        this.CurrentPlayer = this.Players[1];
+                    } else {
+                        this.CurrentPlayer = this.Players[0];
+                    }
+                }
+
+                this.Create = function (id) {
+                    this.Div = document.getElementById(id);
+                    //this.DivStrike = document.getElementById('divStrike');;
+
+                    for (var x = 0; x <= 2; x++) {
+                        var mx = [];
+                        for (var y = 0; y <= 2; y++) {
+                            var obj = new CellGame(this, x, y, this.H);
+                            mx.push(obj);
+                        }
+                        this.MassivCell.push(mx);
+                    }
+
+                    this.DivStrike = document.createElement('div');
+                    this.DivStrike.id = 'divStrike';
+                    this.DivStrike.className = 'strikeN';
+                    this.Div.appendChild(this.DivStrike );
+                }
+
+
+                this.AddMassiveHod = function (row, col, n) {
+                    var hod = [];
+                    hod.push(row);
+                    hod.push(col);
+                    hod.push(n);     // номер символа крестик или нолик
+
+                    // добавить элемент Игрок объект или имя ???
+                    
+                   this.MassivHod.push(hod);
+                }
+
+
+                this.SetStrike = function (t) { // параметр тип перечеркивания
+                }
+
+                this.ResetGame = function () {
+
+                    this.MassivHod = [];    
+                    this.NumberHod = 0;
+
+                    for (var row = 0; row <= 2; row++) {
+                        for (var col = 0; col <= 2; col++) {
+                            this.MassivCell[row][col].SetClass(0);
+                        }                        
+                    }
+
+                    this.DivStrike.className = '';
+
+                    if ((this.CountEndGame % 2) == 0) {
+                        this.CurrentPlayer = this.Players[0]
+                    } else {
+                    this.CurrentPlayer = this.Players[1];
+                    }
+
+                    this.waitClick = true;                    
+                }
+
+                this.CreateStrHistory = function () {
+                    var s = '';
+                    for (var i = 0; i < this.MassivHod.length; i++) {
+                        if (s != '') s = s + '|';
+                        s = s + this.MassivHod[i][2] + '/' + this.MassivHod[i][0] + '/' + this.MassivHod[i][1];
+                    }
+
+                    /*// Список заполненных полей
+                    for (var x = 0; x <= 2; x++) {
+                        for (var y = 0; y <= 2; y++) {
+                            if (this.MassivCell[x][y].isSet>0) {
+                                if (s != '') s = s + '|';
+                                s = s + this.MassivCell[x][y].isSet+':' + this.MassivCell[x][y].X + '/' + this.MassivCell[x][y].Y;
+                            }
+                        }
+                    }
+                    */
+                    return s;
+                }
+
+                this.TestStrike=function(){  // Формирование имени класса для перечеркивания
+                    for (var n = 0; n <= 2; n++) {       
+
+                        if (this.MassivCell[n][0].isSet & this.MassivCell[n][1].isSet & this.MassivCell[n][2].isSet) {                            
+                            return 'strikeH' + (n + 1);
+                        }
+
+                        if (this.MassivCell[0][n].isSet & this.MassivCell[1][n].isSet & this.MassivCell[2][n].isSet) {
+                            return 'strikeV' + (n + 1);
+                        }
+                    }
+
+                    if (this.MassivCell[0][0].isSet & this.MassivCell[1][1].isSet & this.MassivCell[2][2].isSet) {
+                        return 'strikeL';
+                    }
+
+                    if (this.MassivCell[0][2].isSet & this.MassivCell[1][1].isSet & this.MassivCell[2][0].isSet) {
+                        return 'strikeR';
+                    }
+
+                    if (this.MassivHod.length == 9) {
+                        return 'strikeN';
+                    }
+
+                    return '';
+                }
+
+                this.Create(iddiv);
+            }
+
+            var Player = function (game, namebox) {
+               // this.firstHod = false; //????????????????????????????????
+
+                this.index;
+                this.Game = game;
+                this.Tip;
+                this.Box;
+                var self;
+
+                this.Select = function (b) {
+                    var s = 'radio' + (this.index + 1);
+                    document.getElementById(s).checked = b;
+                }
+
+                this.CountGame;    // Количество сыгранных партий
+                this.CountVictory = 0; // Количество выигрышей
+                this.setCountVictory = function () {
+                    var s = 'point' + (this.index + 1);
+                    var divvictory = document.getElementById(s);
+                    divvictory.innerHTML = this.CountVictory;
+                }
+
+                this.CreatePlayr = function (namebox) {
+                    this.Box = document.getElementById(namebox);
+                    this.SetTip(this.Box.value);                    
+                    this.Box.addEventListener('change', onch);
+                    self = this;
+                }
+
+                this.SetTip = function (t) {
+                    this.Tip = t;
+                }
+
+                this.MakeHod = function () {
+                    // Если человек то ждем нажатия кнопки иначе делаем запрос на сервер
+                    this.Select(true);
+
+                    if (this.Tip == 0) {
+                                            // Включить обработку мыши
+                        self.Game.PouseClick = false;
+
+                    }
+                    if (this.Tip == 1) {
+                        var submit = document.getElementById('next');
+                        document.getElementsByName('history')[0].value = this.Game.CreateStrHistory();
+                        submit.click();
+                    }
+                }
+
+                var onch = function () {
+                    self.SetTip(self.Box.value);
+                    //alert(self.Tip)
+                }
+
+                this.CreatePlayr(namebox);
+            }
+
+        </script>
+    </head>
+
+    <body>
+        <div class="myhead">
+            <div style="position:absolute;left:0px;top:0px;height:90px;right:0px;cursor:pointer;">
+                <!-- Рисование заголока программы -->
+                <div id="mover">
+                    <!--  выровнять по средине -->
+                    <div style="color:indigo;font-size:350%;font-weight: bold;"><em>Нолики и K</em></div>
+                    <em style="position:absolute;bottom:0px;right:5px;line-height:16px">onLine</em>
+                </div>
+            </div>
+        </div>
+
+        <div id="outer">
+            <div class="Pole" id="Pole1">
+                <div class="cell" style="position:absolute;left:25px;right:25px;top:25px;height:100px;">
+                    
+                    
+                        <button class="btn btn-primary" onclick="GameInit();" style="position:absolute;left:175px;width:100px;top:11px;">Игра</button>
+                        <button class="btn btn-warning" onclick="document.getElementById('submitload').click();" style="position:absolute;left:175px;width:100px;bottom:11px;">Результаты</button>
+
+                    <input class="tradio" id="radio1" type="radio" name="radiocell" hidden />
+                    <div class="ramka" id="ramka1" style="position:absolute;left:10px;top:10px;bottom:10px;width:155px;"></div>
+
+                    <div style="position:absolute;left:15px;top:26px;">
+                        <div>Игрок 1</div>
+                        <select class="combobox" id="player1">
+                            <option value="0" selected="selected">Человек</option>
+                            <option value="1">Компьютер</option>
+                        </select>
+                    </div>
+                    <div id="point1" class="resultat" style="position:absolute;left:125px;width:34px;height:34px;top:33px;background-color:black;color:lawngreen;">0</div>
+
+                    <input class="tradio" id="radio2" type="radio" name="radiocell" hidden />
+                    <div class="ramka" id="ramka2" style="position:absolute;right:10px;top:10px;bottom:10px;width:155px;"></div>
+
+                    <div style="position:absolute;right:15px;top:26px;">
+                        <div >Игрок 2</div>
+                        <select class="combobox" id="player2">
+                            <option value="0">Человек</option>
+                            <option value="1" selected="selected">Компьютер</option>
+                        </select>
+                    </div>
+                    <div id="point2" class="resultat" style="position:absolute;right:125px;width:34px;height:34px;top:33px;background-color:black;color:lawngreen;">0</div>
+
+                        <div id="work" style="position:absolute;left:0px;top:125px;height:450px;width:450px;">
+
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+
+
+        @using (Ajax.BeginForm("calc",
+                    new AjaxOptions
+                    {
+                        //UpdateTargetId = "my_success",
+                        //LoadingElementId = "my_progress",
+                        //OnBegin = "OnBegin",
+                        OnSuccess = "OnSuccess",
+                        //OnComplete = "OnComplete",
+                        //OnFailure = "OnFailure"
+                    }))
+        {
+            <input type="text" name="history" style="display:none;">
+            <input type="submit" id="next" value="next" style="display:none;">
+        }
+
+        @using (Ajax.BeginForm("SaveGame",
+                        new AjaxOptions
+                        {
+                            //UpdateTargetId = "my_success",
+                            //LoadingElementId = "my_progress",
+                            //OnBegin = "OnBegin",
+                            OnSuccess = "OnSuccessSave",
+                            //OnComplete = "OnComplete",
+                            //OnFailure = "OnFailure"
+                        }))
+        {
+            <input type="text" name="victory" style="display:none;">
+            <input type="text" name="historysave" style="display:none;">
+            <input type="submit" id="submitsave" value="submitsave" style="display:none;">
+        }
+
+        @using (Ajax.BeginForm("LoadGame",
+                            new AjaxOptions
+                            {
+                                //UpdateTargetId = "my_success",
+                                //LoadingElementId = "my_progress",
+                                //OnBegin = "OnBegin",
+                                OnSuccess = "OnSuccessLoad",
+                                //OnComplete = "OnComplete",
+                                //OnFailure = "OnFailure"
+                            }))
+        {
+            <input type="submit" id="submitload" value="submitload" style="display:none;">
+        }
+
+        <div id="ModalEnd" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Заголовок модального окна -->
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Внимание</h4>
+                    </div>
+                    <!-- Основное содержимое модального окна -->
+                    <div id="text" class="modal-body">
+                        Игра окончена
+                    </div>
+                    <!-- Футер модального окна -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <!-- <button type="button" class="btn btn-primary">Сохранить изменения</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade " id="LoadResult" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Результаты</h4>
+                    </div>
+                    <div class="modal-body" id="BodyLoadResult">
+
+                        <div style="width:45px;height:45px;">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <!--   <button type="button" class="btn btn-primary">Save changes</button> -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            function OnSuccess(data) {
+                
+                Game.PouseClick = false; // Влючить реакцию на клики мышью
+
+                // Может вернуться ход а может вернуться окончание игры
+
+                var m = data.split(':');
+                Game.MassivCell[m[0]][m[1]].Div.click();
+
+                /*
+                if (m[0] > 0) {
+
+                    var message = 'Игра окончена - ';
+                    if (m[0] == 1) { message = message + 'Крестики выиграли!'; }
+                    if (m[0] == 4) { message = message + 'Нолики выиграли!'; }
+                    if (m[0] == 2) { message = message + 'Ничья!'; }
+
+                    document.getElementById('text').innerHTML = message;
+
+                    $("#ModalEnd").modal('show');
+
+                }
+                */
+            }
+
+            function OnSuccessSave(data) {
+               // alert('SuccessSave');
+            }
+
+            function OnSuccessLoad(data) {
+                //alert(data);
+                document.getElementById('BodyLoadResult').innerHTML = data;
+                $("#LoadResult").modal('show');
+            }
+
+            function GameInit() {
+                Game.ResetGame();
+
+                Game.CurrentPlayer.MakeHod();
+
+            }
+
+
+            var Game = new PoleGame('work', 150);
+
+            var Player1 = new Player(Game, 'player1');
+            var Player2 = new Player(Game, 'player2');
+            Game.SetPlayer(Player1, Player2);
+        </script>
+
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/scripts/jquery.unobtrusive-ajax.js"></script>
+    
+    </body>
+</html>
